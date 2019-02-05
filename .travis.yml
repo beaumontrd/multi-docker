@@ -17,6 +17,6 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
   - docker push beaumontrd/multi-client
-  - docker push beaumuntrd/multi-nginx
+  - docker push beaumontrd/multi-nginx
   - docker push beaumontrd/multi-server
   - docker push beaumontrd/multi-worker
