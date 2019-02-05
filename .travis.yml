@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t beaumontrd/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run beaumontrd/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t beaumontrd/multi-client ./client
+  - docker build -t beaumontrd/multi-nginx ./nginx
+  - docker build -t beaumontrd/multi-server ./server
+  - docker build -t beaumontrd/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push beaumontrd/multi-client
+  - docker push beaumuntrd/multi-nginx
+  - docker push beaumontrd/multi-server
+  - docker push beaumontrd/multi-worker
